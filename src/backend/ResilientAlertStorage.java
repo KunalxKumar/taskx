@@ -70,8 +70,8 @@ public class ResilientAlertStorage implements AlertStorage {
 
     private String csv(String value) {
         if (value == null) {
-            return "\"\"";
+            return "\"" + "\"" ;
         }
-        return "\"\"" + value.replace("\"\"", "\"\"\"\"") + "\"\"";
+        return "\"" + value.replace("\"", "\"\"") + "\"";
     }
 }
