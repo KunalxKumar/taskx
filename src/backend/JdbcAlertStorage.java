@@ -1,7 +1,6 @@
 package backend;
 
 import model.Alert;
-import java.lang.reflect.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
