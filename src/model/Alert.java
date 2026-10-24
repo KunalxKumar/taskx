@@ -24,6 +24,7 @@ public class Alert {
     public String getSourceIP() { return sourceIP; }
     public String getType() { return type; }
     public String getMessage() { return message; }
+    public void setTimestamp(String timestamp) { this.timestamp = timestamp; }
 
     /** Serializes to one line for logging */
     public String toLogLine() {
