@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">TaskX Cyber Security Suite</title>
+  <desc id="desc">Shield emblem with a cyber core, circuit traces and radar sweep.</desc>
+  <defs>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#00F0FF"/>
+      <stop offset="1" stop-color="#3B82F6"/>
+    </linearGradient>
+    <linearGradient id="ember" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <path d="M512 72 820 190v260c0 214-116 390-308 502C320 840 204 664 204 450V190L512 72Z" fill="#0B1120" stroke="#1E293B" stroke-width="28"/>
+  <path d="M512 130 758 224v224c0 174-92 320-246 416-154-96-246-242-246-416V224l246-94Z" fill="#1E293B" stroke="#00F0FF" stroke-width="10"/>
+  <path d="M512 300v310M357 410h310M405 260l-52 54v70M619 260l52 54v70M405 664l-52-54v-70M619 664l52-54v-70" fill="none" stroke="#10B981" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="512" cy="512" r="132" fill="#0B1120" stroke="url(#core)" stroke-width="18"/>
+  <circle cx="512" cy="512" r="72" fill="url(#core)"/>
+  <path d="M512 340a172 172 0 0 1 172 172" fill="none" stroke="#00F0FF" stroke-width="20" stroke-linecap="round"/>
+  <path d="m512 512 145-86" stroke="#F59E0B" stroke-width="22" stroke-linecap="round"/>
+  <path d="M447 690h130l-26 70h-78z" fill="url(#ember)"/>
+  <path d="M480 690h64v-42h-64z" fill="#F59E0B"/>
+</svg>
