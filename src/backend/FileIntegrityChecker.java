@@ -131,7 +131,8 @@ public class FileIntegrityChecker {
     private String toHex(byte[] bytes) {
         StringBuilder builder = new StringBuilder(bytes.length * 2);
         for (byte value : bytes) {
-            builder.append(String.format("%02x", value & 0xff));
+            builder.append(Character.forDigit((value >>> 4) & 0x0f, 16));
+            builder.append(Character.forDigit(value & 0x0f, 16));
         }
         return builder.toString();
     }
