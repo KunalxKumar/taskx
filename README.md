@@ -1,58 +1,128 @@
-# Cyber Security Suite
+<p align="center">
+  <img src="assets/logo.svg" width="140" alt="TaskX logo">
+</p>
 
-Cyber Security Suite is a Java Swing-based desktop application designed to provide essential security monitoring and process management tools. It includes an Intrusion Detection System (IDS), an Event Viewer to inspect security alerts, and a Windows Process Killer to manage and terminate system processes.
+<h1 align="center">TaskX Cyber Security Suite</h1>
 
-## Features
+<p align="center">
+  A Java Swing desktop security toolkit combining intrusion monitoring, alert management,
+  process inspection, network scanning, and file-integrity verification.
+</p>
 
-- **Intrusion Detection System (IDS)**: Runs a background monitoring engine that captures real-time system events, analyzes them for malicious patterns, and stores alerts.
-- **Event Viewer**: A graphical interface that allows users to review the alerts triggered by the IDS, complete with details about the anomalous events.
-- **Process Killer**: A task manager-like utility tailored for Windows. It provides a real-time list of running processes along with their memory usage, and allows users to forcibly terminate suspicious or unresponsive processes.
+## Modules
 
-## Technologies Used
+| Module | Purpose |
+| --- | --- |
+| Intrusion Detection | Collects simulated security events and applies rule-based analysis. |
+| Event Viewer | Filters, searches, reviews and exports generated alerts. |
+| Process Killer | Windows-oriented process inspection and termination utility. |
+| Network Scanner | Multi-threaded TCP port scanning for authorized hosts with service/risk classification. |
+| File Integrity Monitor | MD5, SHA-1 and SHA-256 hashing plus directory snapshot comparison. |
 
-- **Language**: Java
-- **GUI Framework**: Java Swing / AWT
-- **Concurrency**: Multithreading with `LinkedBlockingQueue` for real-time event processing.
-- **Data Storage**: File-based alert logging.
+## Resilient Storage
 
-## Prerequisites
+TaskX attempts MySQL when the JDBC driver and local database are available. When MySQL is unavailable,
+the application transparently uses `data/alerts.log` through `FileAlertStorage`, so the dashboard does not
+fail simply because a database service is offline.
 
-- **Java Development Kit (JDK)**: Version 8 or higher.
-- **Operating System**: Windows (required for the Process Killer module functionality).
+Optional database settings can be supplied with JVM properties:
 
-## Getting Started
+```text
+-Dtaskx.db.url=jdbc:mysql://127.0.0.1:3306/taskx
+-Dtaskx.db.user=root
+-Dtaskx.db.password=your_password
+```
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Kunalxkumar/taskx.git
-   cd taskx
-   ```
+The MySQL connector remains an optional runtime dependency.
 
-2. **Compile the project:**
-   Make sure to compile the source code from the `src` directory into a `bin` directory (or use an IDE like IntelliJ / Eclipse).
-   ```bash
-   javac -d bin src/**/*.java
-   ```
+## Requirements
 
-3. **Run the application:**
-   ```bash
-   java -cp bin Main
-   ```
+- JDK 8+
+- Windows is recommended for the Process Killer module
+- PowerShell for the included build/run scripts
+- Optional: MySQL Connector/J when database-backed alert storage is desired
+- Optional: JUnit 5 console launcher for running the test suite
+
+## Build
+
+```powershell
+.\build.ps1
+```
+
+## Run
+
+```powershell
+.\run.ps1
+```
+
+The run script automatically includes `lib/mysql-connector-j-9.7.0.jar` when that file exists.
+
+## Tests
+
+Place the JUnit 5 console standalone JAR at:
+
+```text
+lib/junit-platform-console-standalone.jar
+```
+
+Then run:
+
+```powershell
+.\test.ps1
+```
+
+The suite covers file hashing and integrity states, local TCP scanning, and MySQL-to-file storage fallback.
+
+## Network Scanner Safety
+
+The scanner performs TCP connection checks only. Use it only against systems and networks you own or
+have explicit authorization to assess. The dashboard's presets are intended for controlled defensive testing.
+
+## Architecture
+
+```text
+MainDashboard
+  ├── Intrusion Detection
+  │     └── EventCollector -> Analyzer -> ResilientAlertStorage
+  ├── Event Viewer
+  │     └── ResilientAlertStorage
+  ├── Process Killer
+  ├── Network Scanner
+  │     └── NetworkScanner -> TCP sockets
+  └── File Integrity
+        └── FileIntegrityChecker -> MessageDigest
+
+ResilientAlertStorage
+  ├── MySQL available  -> JdbcAlertStorage
+  └── MySQL unavailable -> FileAlertStorage (data/alerts.log)
+```
+
+## Branding
+
+The TaskX emblem is stored as a self-contained SVG at `assets/logo.svg` and is designed around a dark
+slate shield, electric-cyan cyber core, circuit traces, radar sweep and Java-inspired ember accent.
 
 ## Project Structure
 
-```
+```text
 taskx/
-│
+├── assets/
+│   └── logo.svg
+├── data/
 ├── src/
-│   ├── Main.java               # Application entry point
-│   ├── gui/                    # Graphical User Interface components
-│   │   ├── MainDashboard.java
-│   │   ├── EventViewerGUI.java
-│   │   └── ProcessKillerGUI.java
-│   ├── backend/                # Background services (IDS, Storage, Analyzers)
-│   ├── model/                  # Data models (Events, Alerts, Process Info)
-│   └── util/                   # Utility classes
-│
-└── data/                       # Logs and event storage (e.g., alerts.log)
+│   ├── Main.java
+│   ├── backend/
+│   ├── gui/
+│   ├── model/
+│   └── util/
+├── test/
+├── build.ps1
+├── run.ps1
+├── test.ps1
+└── README.md
 ```
+
+## Disclaimer
+
+TaskX is an educational and defensive security toolkit. Only use the network and process-management
+features in environments where you have permission to perform the relevant actions.
