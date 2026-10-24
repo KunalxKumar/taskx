@@ -95,6 +95,13 @@ public class EventViewerGUI extends JFrame {
             }
         }));
 
+        JButton exportButton = new JButton("Export CSV");
+        exportButton.setBackground(new Color(16, 185, 129));
+        exportButton.setForeground(Color.WHITE);
+        exportButton.setFocusPainted(false);
+        exportButton.addActionListener(e -> exportCsv());
+        panel.add(exportButton);
+
         JButton refreshButton = new JButton("Refresh");
         refreshButton.setBackground(new Color(70, 130, 180));
         refreshButton.setForeground(Color.WHITE);
@@ -175,6 +182,41 @@ public class EventViewerGUI extends JFrame {
             );
             detailArea.setText(details);
         }
+    }
+
+    private void exportCsv() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setSelectedFile(new java.io.File("taskx-alerts.csv"));
+        if (chooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
+
+        try {
+            if (storage instanceof backend.ResilientAlertStorage) {
+                ((backend.ResilientAlertStorage) storage).exportToCsv(chooser.getSelectedFile());
+            } else {
+                try (java.io.PrintWriter writer = new java.io.PrintWriter(
+                    new java.io.FileWriter(chooser.getSelectedFile())
+                )) {
+                    writer.println("timestamp,severity,source_ip,type,message");
+                    for (Alert alert : storage.loadAll()) {
+                        writer.println(csv(alert.getTimestamp()) + "," +
+                            csv(alert.getSeverity()) + "," +
+                            csv(alert.getSourceIP()) + "," +
+                            csv(alert.getType()) + "," +
+                            csv(alert.getMessage()));
+                    }
+                }
+            }
+            JOptionPane.showMessageDialog(this, "Alerts exported successfully.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(
+                this, "Export failed: " + ex.getMessage(),
+                "Export Error", JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private String csv(String value) {
+        return "\"" + (value == null ? "" : value.replace("\"", "\"\"")) + "\"";
     }
 
     private void refreshAlerts(boolean showMessage) {
