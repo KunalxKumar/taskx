@@ -4,8 +4,6 @@ import backend.FileIntegrityChecker;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.nio.file.NotDirectoryException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
